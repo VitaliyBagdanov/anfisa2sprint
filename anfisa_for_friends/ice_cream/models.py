@@ -9,7 +9,7 @@ class Category(PublishedModel):
     output_order = models.PositiveSmallIntegerField(
         default=100,
         verbose_name='Порядок отображения')
-    
+
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
@@ -31,7 +31,11 @@ class Topping(PublishedModel):
 
 
 class Wrapper(PublishedModel):
-    title = models.CharField(max_length=256, verbose_name='Название')
+    title = models.CharField(
+        max_length=256,
+        verbose_name='Название',
+        help_text='Уникальное название обертки, не более 256',
+    )
 
     class Meta:
         verbose_name = 'Обертка'
@@ -50,15 +54,20 @@ class IceCream(PublishedModel):
         related_name='ice_cream',
         null=True,
         blank=True,
+        verbose_name='Обертка'
     )
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
         related_name='ice_creams',
+        verbose_name='Категория',
     )
-    toppings = models.ManyToManyField(Topping)
+    toppings = models.ManyToManyField(
+        Topping,
+        verbose_name='Топпинг',
+    )
     is_on_main = models.BooleanField('На главную', default=False)
-   
+
     class Meta:
         verbose_name = 'Мороженое'
         verbose_name_plural = 'Мороженое'
